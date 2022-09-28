@@ -9,9 +9,12 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shortmovieapp.Util.Resource
+import com.example.shortmovieapp.Util.Resource.Success
 import com.example.shortmovieapp.adapter.MovieAdapter
 import com.example.shortmovieapp.adapter.NowPlayingAdapter
 import com.example.shortmovieapp.databinding.FragmentMainPageBinding
+import com.example.shortmovieapp.model.Movie
 import com.example.shortmovieapp.viewModel.MainPageViewModel
 
 
@@ -34,45 +37,21 @@ class MainPageFragment : Fragment() {
 
         provideViewModel()
         getMovies()
-        getNowPlayinMovies()
-        swipeReslesh()
+
     }
     private fun provideViewModel() {
         viewModel = ViewModelProvider(requireActivity()).get(MainPageViewModel::class.java)
     }
     private fun getMovies() {
-        viewModel._movie.observe(this, Observer {
-            adapter = MovieAdapter(it)
-            binding.verticalRecyclerview.layoutManager = LinearLayoutManager(context)
-            binding.verticalRecyclerview.adapter = adapter
+        viewModel.movie.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Success ->{
+                    adapter = MovieAdapter(it.data)
+                    binding.verticalRecyclerview.layoutManager = LinearLayoutManager(context)
+                    binding.verticalRecyclerview.adapter = adapter
+                }
+            }
         })
     }
-    private fun getNowPlayinMovies() {
-        viewModel._nowPlaying.observe(this, Observer {
-            nowPlayingAdapter = NowPlayingAdapter(it)
-            binding.horizontalRecyclerview.layoutManager=LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
-            binding.horizontalRecyclerview.adapter = nowPlayingAdapter
-        })
-    }
-    private fun swipeReslesh() {
-        binding.swipeReflesh.setOnRefreshListener {
-            binding.horizontalRecyclerview.visibility = View.GONE
-            binding.verticalRecyclerview.visibility = View.GONE
-            viewModel._movie.observe(this, Observer {
-                adapter = MovieAdapter(it)
-                binding.verticalRecyclerview.layoutManager = LinearLayoutManager(context)
-                binding.verticalRecyclerview.adapter = adapter
-                binding.verticalRecyclerview.visibility = View.VISIBLE
-            })
-            viewModel._nowPlaying.observe(this, Observer {
-                nowPlayingAdapter = NowPlayingAdapter(it)
-                binding.horizontalRecyclerview.layoutManager=LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
-                binding.horizontalRecyclerview.adapter = nowPlayingAdapter
-                binding.horizontalRecyclerview.visibility = View.VISIBLE
 
-            })
-            binding.swipeReflesh.isRefreshing = false
-            Toast.makeText(requireContext(),"Yenilendi!", Toast.LENGTH_SHORT).show()
-        }
-    }
 }

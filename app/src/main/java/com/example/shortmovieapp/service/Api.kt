@@ -1,6 +1,7 @@
 package com.example.shortmovieapp.service
 
 import com.example.shortmovieapp.Util.Constans.Companion.API_KEY
+import com.example.shortmovieapp.Util.Resource
 import com.example.shortmovieapp.model.Result
 import com.example.shortmovieapp.model.Movie
 import retrofit2.Response
@@ -14,7 +15,7 @@ interface Api {
     suspend fun getUpcomingList(
         @Query("api_key")
         apiKey:String=API_KEY
-    ): Response<Movie>
+    ): Movie
 
     @GET("3/movie/now_playing?")
     suspend fun getNowPlayingList(

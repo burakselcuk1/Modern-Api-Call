@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.shortmovieapp.R
 import com.example.shortmovieapp.Util.Constans.Companion.POSTER_MAIN_URL
 import com.example.shortmovieapp.model.Movie
@@ -45,7 +44,6 @@ class MovieAdapter(private val dataSet: Movie) :
 
         val url = POSTER_MAIN_URL + dataSet.results[position].poster_path
         viewHolder.itemView.apply {
-            Glide.with(this).load(url).into(viewHolder.itemView.movieImage)
         }
 
         viewHolder.itemView.setOnClickListener {
