@@ -1,7 +1,6 @@
 package com.example.shortmovieapp.service
 
 import com.example.shortmovieapp.Util.Constans.Companion.API_KEY
-import com.example.shortmovieapp.Util.Resource
 import com.example.shortmovieapp.model.Result
 import com.example.shortmovieapp.model.Movie
 import retrofit2.Response
